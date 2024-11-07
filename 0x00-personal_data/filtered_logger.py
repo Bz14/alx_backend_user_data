@@ -6,6 +6,15 @@ from typing import List
 import logging
 
 
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
+    """
+    Returns the log message obfuscated
+    """
+    pattern = f"({'|'.join(fields)})=([^ {separator}]*)"
+    return re.sub(pattern, lambda m: f"{m.group(1)}={redaction}", message)
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class """
 
@@ -22,12 +31,3 @@ class RedactingFormatter(logging.Formatter):
         """ Format method """
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
-
-
-def filter_datum(fields: List[str], redaction: str,
-                 message: str, separator: str) -> str:
-    """
-    Returns the log message obfuscated
-    """
-    pattern = f"({'|'.join(fields)})=([^ {separator}]*)"
-    return re.sub(pattern, lambda m: f"{m.group(1)}={redaction}", message)
