@@ -62,3 +62,22 @@ def get_logger() -> logging.Logger:
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
     return logger
+
+
+def main():
+    """ Main function """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    fields = [i[0] for i in cursor.description]
+    logger = get_logger()
+    for row in cursor:
+        message = '; '.join(f'{fields[i]}={str(row[i])}'
+                            for i in range(len(fields)))
+        logger.info(message.strip())
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
