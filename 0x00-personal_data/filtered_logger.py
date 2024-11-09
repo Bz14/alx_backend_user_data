@@ -40,18 +40,6 @@ def filter_datum(fields, redaction: str,
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
-def get_logger() -> logging.Logger:
-    """ Returns a logging.Logger object """
-    logger = logging.getLogger('user_data')
-    logger.setLevel(logging.INFO)
-    logger.propagate = False
-    stream_handler = logging.StreamHandler()
-    formatter = RedactingFormatter(PII_FIELDS)
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
-    return logger
-
-
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Returns a connector to the database """
     db_connect = mysql.connector.connect(
@@ -62,3 +50,15 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
     return db_connect
+
+
+def get_logger() -> logging.Logger:
+    """ Returns a logging.Logger object """
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    stream_handler = logging.StreamHandler()
+    formatter = RedactingFormatter(PII_FIELDS)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+    return logger
