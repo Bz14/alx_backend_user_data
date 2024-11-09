@@ -40,14 +40,15 @@ def filter_datum(fields, redaction: str,
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
-def get_db() -> mysql.connector.connection.MYSQLConnection:
-    """ Connection to MySQL environment """
-    db_connect = mysql.connector.connect(
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ Returns a connector to the database """
+    db_connect = mysql.connector.connect.MySQLConnection(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
         database=os.getenv('PERSONAL_DATA_DB_NAME')
     )
+
     return db_connect
 
 
