@@ -4,6 +4,6 @@
 from .auth import Auth
 
 
-class BasicAuth(Auth):
+class BasicAuth (Auth):
     """Basic Auth"""
     pass
