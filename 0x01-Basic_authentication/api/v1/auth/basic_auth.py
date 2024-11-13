@@ -39,14 +39,6 @@ class BasicAuth(Auth):
             return message
         except Exception:
             return None
-    """
-    Improve the method def extract_user_credentials
-    
-    (self, decoded_base64_authorization_header) to 
-    
-    allow password with :
-    
-    """
 
     def extract_user_credentials(self,
                                  decoded_base64_authorization_header:
@@ -59,7 +51,8 @@ class BasicAuth(Auth):
         if ":" not in decoded_base64_authorization_header:
             return None, None
         try:
-            user_credentials = decoded_base64_authorization_header.split(':',1)
+            user_credentials = decoded_base64_authorization_header.split(':',
+                                                                         1)
             return user_credentials[0], user_credentials[1]
         except Exception:
             return None, None
