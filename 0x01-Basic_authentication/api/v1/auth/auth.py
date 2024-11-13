@@ -22,8 +22,6 @@ class Auth:
                 return False
         return True
 
-
-
     def authorization_header(self, request=None) -> str:
         """ authorization_header """
         if request is None or "Authorization" not in request.headers:
