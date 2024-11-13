@@ -2,7 +2,7 @@
 """Basic Auth"""
 
 from .auth import Auth
-from typing import Tuple
+from typing import Tuple, TypeVar
 from models.user import User
 
 
