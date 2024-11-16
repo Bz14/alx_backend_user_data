@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Session Authentication """
-from auth import Auth
+from .auth import Auth
 import uuid
 
 
