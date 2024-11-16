@@ -10,6 +10,7 @@ from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
 from api.v1.auth.session_auth import SessionAuth
 
+
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
@@ -43,7 +44,6 @@ def forbidden(error) -> str:
     """
     return jsonify({"error": "Forbidden"}), 403
 
-
 @app.before_request
 def before_request():
     """ Before request """
@@ -52,15 +52,14 @@ def before_request():
     excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
                       '/api/v1/forbidden/', '/api/v1/auth_session/login/']
     if auth.require_auth(request.path, excluded_paths):
-        request.current_user = auth.current_user(request)
-        if auth is None:
-            pass
-    elif not auth.require_auth(request.path, excluded_paths):
-        pass
-    else:
-        if (auth.authorization_header(request) is None
-                and auth.session_cookie(request) is None):
+        if not auth.authorization_header(request):
             abort(401)
+        if not auth.current_user(request):
+            abort(403)
+        if (auth.authorization_header(request) and
+            not auth.session_cookie(request)):
+            abort(401)
+        request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":
