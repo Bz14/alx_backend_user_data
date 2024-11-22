@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -40,5 +41,15 @@ class DB:
             session.commit()
         except Exception:
             session.rollback()
-            user = None
+            raise
+        return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by keyword arguments
+        """
+        session = self._session
+        
+        user = session.query(User).filter_by(**kwargs).first()
+        if user is None:
+            raise NoResultFound
         return user
