@@ -32,17 +32,16 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """Add a user to the database
-        """
-        user = User(email=email, hashed_password=hashed_password)
+        """Adds a new user to the db"""
+        new_user = User(email=email, hashed_password=hashed_password)
         try:
-            
-            self._session.add(user)
+            self._session.add(new_user)
             self._session.commit()
-        except Exception:
+        except Exception as e:
+            print(f"Error adding user to database: {e}")
             self._session.rollback()
             raise
-        return user
+        return new_user
 
     def find_user_by(self, **kwargs) -> User:
         """Find a user by keyword arguments
